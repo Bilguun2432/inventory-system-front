@@ -1,0 +1,33 @@
+body {
+  display: block;
+}
+
+#page_wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+#side_bar {
+  display: block;
+  border: 1px solid blue;
+  width: 300px;
+  height: 100vh;
+}
+
+#page_content {
+  display: block;
+  position: relative;
+  border: 1px solid magenta;
+  height: 100vh;
+  flex-grow: 1;
+}
+
+:root {
+  --primary-main: #00007c;
+  --primary-dark: #030044;
+  --primary-light: #3f50b5;
+
+  --yellow-main: #fdb713;
+  --yellow-dark: #de8509;
+  --yellow-light: #ffd042;
+}
