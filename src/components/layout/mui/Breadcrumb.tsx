@@ -6,7 +6,6 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Box from "@mui/material/Box";
 import Chip, { ChipProps } from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
-import React from "react";
 
 export interface CrumbProps extends ChipProps {
   url?: string;
@@ -29,7 +28,6 @@ const Crumb = styled(Chip)(({ theme }) => {
     },
   };
 });
-
 export default function Breadcrumb({ paths }: { paths: CrumbProps[] }) {
   return (
     <>
@@ -37,7 +35,6 @@ export default function Breadcrumb({ paths }: { paths: CrumbProps[] }) {
         <Link href={"/"}>
           <Crumb label="Нүүр" icon={<HomeIcon fontSize="small" />} />
         </Link>
-
         {paths?.map((path: CrumbProps, index: number) => {
           return (
             <Box key={`bread_crumbs_${index}`} sx={{ display: "inline-block" }}>

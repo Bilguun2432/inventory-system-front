@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,25 +8,24 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import { productCategoryAPI } from "./api";
-import dayjs from "dayjs";
-// import EditIcon from "@mui/icons-material/Edit";
-import { ProductCategoryType } from "@/types/modules/product";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import { useTheme } from "@mui/material/styles";
 import { useState, useEffect, MouseEvent, ChangeEvent, useContext } from "react";
 import TablePagination from "@mui/material/TablePagination";
+import { productCategoryAPI } from "./api";
+import { ProductCategoryType } from "@/types/modules/product";
 import { PaginationModelType, SortModelType } from "@/types/modules/common";
-import { ModalContext } from "@/components/layout/mui/ModalProvider";
-import { useTheme } from "@mui/material/styles";
-import ProductCategoryNew from "./new";
-import { AxiosError, AxiosResponse } from "axios";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import { AxiosError, AxiosResponse } from "axios";
 import Stack from "@mui/material/Stack";
 import OffCanvasPane from "@/components/layout/mui/OffCanvasPane";
 import Typography from "@mui/material/Typography";
 import FormFilter from "./FormFilter";
+import { ModalContext } from "@/components/layout/mui/ModalProvider";
+import ProductCategoryNew from "./new";
+import ProductCategoryEdit from "./edit";
 
 export interface ProductCategoryPaginationModelType extends PaginationModelType {
   items?: ProductCategoryType[];
@@ -63,11 +61,7 @@ const initialListRequest = {
   },
 };
 
-interface ListProps {
-  onModalEdit?: (productCategory: ProductCategoryType) => void;
-}
-
-export default function ProductCategoryList(props: ListProps) {
+export default function ProductCategoryList() {
   const modalContext = useContext(ModalContext);
   if (modalContext === undefined) {
     throw new Error("ModalContext undefined");
@@ -76,9 +70,8 @@ export default function ProductCategoryList(props: ListProps) {
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false);
 
   const [listReq, setListReq] = useState<ProductCategoryListRequestType>(initialListRequest);
-  const [productCategorysPaged, setProductCategorysPaged] = useState<ProductCategorysPagedType | null>(null);
+  const [productCategorysPaged, setProductsPaged] = useState<ProductCategorysPagedType | null>(null);
 
-  const { onModalEdit } = props;
   const theme = useTheme();
 
   async function onMutateComplete() {
@@ -87,7 +80,7 @@ export default function ProductCategoryList(props: ListProps) {
       .then(function (response: AxiosResponse) {
         const { status, data } = response;
         if (status == 200) {
-          setProductCategorysPaged(data);
+          setProductsPaged(data);
         }
       })
       .catch(function (error: AxiosError) {
@@ -100,20 +93,22 @@ export default function ProductCategoryList(props: ListProps) {
     showModal("Create new ProductCategory", <ProductCategoryNew onComplete={onMutateComplete} />, "md");
   }
 
+  function btnEditClick(productCategory: ProductCategoryType) {
+    showModal(`Edit ProductCategory /${productCategory.name}/`, <ProductCategoryEdit productCategory={productCategory} onComplete={onMutateComplete} />, "md");
+  }
+
   function onFilterFormClose() {
     setShowFilterForm(false);
   }
 
   useEffect(
     function () {
-      console.log("useCallback");
-
       productCategoryAPI
         .listFilter(listReq)
         .then(function (response: AxiosResponse) {
           const { status, data } = response;
           if (status == 200) {
-            setProductCategorysPaged(data);
+            setProductsPaged(data);
           }
         })
         .catch(function (error: AxiosError) {
@@ -195,8 +190,8 @@ export default function ProductCategoryList(props: ListProps) {
                 <TableCell>ID</TableCell>
                 <TableCell>Нэр</TableCell>
                 <TableCell>Тайлбар</TableCell>
-                <TableCell>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Үүсгэсэн он</TableCell>
-                <TableCell>Дэлгэрэнгүй</TableCell>
+                <TableCell>Үүсгэсэн огноо</TableCell>
+                <TableCell>Засах</TableCell>
               </TableRow>
             </TableHead>
 
@@ -204,17 +199,23 @@ export default function ProductCategoryList(props: ListProps) {
               {getItems().map(function (productCategory: ProductCategoryType) {
                 return (
                   <TableRow key={`productCategory${productCategory.id}`}>
-                    <TableCell className="p-1 border border-slate-300 text-center font-bold">{productCategory.id}</TableCell>
+                    <TableCell>{productCategory.id}</TableCell>
                     <TableCell>{productCategory.name}</TableCell>
                     <TableCell>{productCategory.description}</TableCell>
-                    <TableCell>{dayjs(productCategory.timeCreated).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                    <TableCell>{productCategory.timeCreated ? productCategory.timeCreated.toLocaleString() : "N/A"}</TableCell>
                     <TableCell>
-                      &nbsp;&nbsp;&nbsp;
-                      <Link href={`${productCategory.id}/detail`}>
-                        <Button variant="outlined" size="small" color="info">
-                          <ArrowCircleRightIcon />
+                      <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          sx={{ ml: theme.spacing(0) }}
+                          onClick={() => {
+                            btnEditClick(productCategory);
+                          }}
+                        >
+                          Edit
                         </Button>
-                      </Link>
+                      </ButtonGroup>
                     </TableCell>
                   </TableRow>
                 );
@@ -225,7 +226,7 @@ export default function ProductCategoryList(props: ListProps) {
       </Grid>
 
       <OffCanvasPane open={showFilterForm} onClose={onFilterFormClose}>
-        <Typography>ProductCategory Filter Form</Typography>
+        <Typography>Product Filter Form</Typography>
         <FormFilter onFilterSubmit={onFilterSubmit} />
       </OffCanvasPane>
 

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "baseUrl": "./src",
+    "jsx": "preserve",
     "target": "es6",
     "lib": ["es6", "dom", "dom.iterable", "esnext"],
     "noImplicitAny": true,
@@ -23,7 +24,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["*"],
+      "@app/(main)/*": ["./src/app/(main)/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

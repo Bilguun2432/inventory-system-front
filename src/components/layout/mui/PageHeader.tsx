@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Breadcrumb, { CrumbProps } from "./Breadcrumb";
-import React from "react";
 
 export default function PageHeader({ pageTitle, pagePaths }: { pageTitle: string; pagePaths: CrumbProps[] }) {
   return (

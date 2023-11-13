@@ -10,9 +10,6 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import ProductCategorySelect from "./category/form/select";
-import ProductConfSelect from "./conf/form/select";
-import ProductCompletionSelect from "./completion/form/select";
 
 import { useCreateSwr, useUpdateSwr, useDetailSwr } from "./api";
 import { ProductType } from "@/types/modules/product";
@@ -92,15 +89,6 @@ export default function ProductForm(props: FormProps) {
     <Box sx={{ my: theme.spacing(2) }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ mb: theme.spacing(4) }}>
-          <ProductCategorySelect
-            label="Category"
-            defaultValue={data ? data.categoryId : ""}
-            error={errors.categoryId ? true : false}
-            {...register("categoryId")}
-          />
-        </Box>
-
-        <Box sx={{ mb: theme.spacing(4) }}>
           <TextField
             label={"Name"}
             {...register("name")}
@@ -147,24 +135,6 @@ export default function ProductForm(props: FormProps) {
             size="medium"
             error={errors.name ? true : false}
             helperText={errors.name?.message}
-          />
-        </Box>
-
-        <Box sx={{ mb: theme.spacing(4) }}>
-          <ProductCompletionSelect
-            label="Product Completion"
-            defaultValue={data ? data.productCompletionId : ""}
-            error={errors.productCompletionId ? true : false}
-            {...register("productCompletionId")}
-          />
-        </Box>
-
-        <Box sx={{ mb: theme.spacing(4) }}>
-          <ProductConfSelect
-            label="Product Config"
-            defaultValue={data ? data.productConfId : ""}
-            error={errors.productConfId ? true : false}
-            {...register("productConfId")}
           />
         </Box>
 

@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
 import { ModalDialogProps } from "@/types/component";
-import React from "react";
 
 interface ModalDialogWithHideProps extends ModalDialogProps {
   hideModal: () => void;

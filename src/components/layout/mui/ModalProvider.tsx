@@ -3,7 +3,6 @@
 import { useState, ReactNode, FC, createContext } from "react";
 import ModalDialog from "./ModalDialog";
 import { LayoutProps, ModalDialogProps } from "@/types/component";
-import React from "react";
 
 export interface ModalContextType {
   showModal: (title: string, content: ReactNode, size: string) => void;

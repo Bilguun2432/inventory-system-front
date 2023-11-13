@@ -3,7 +3,7 @@
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
-import ProductCategoryForm from "./detail/form";
+import ProductCategoryForm from "./form";
 
 interface ProductCategoryNewProps {
   onComplete?: () => void;

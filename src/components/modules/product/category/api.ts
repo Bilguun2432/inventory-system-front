@@ -12,7 +12,7 @@ export function useListSwr() {
   return useSWR(`${urlBase}/`, GET);
 }
 
-export function useDetailSwr(id: number | string) {
+export function useDetailSwr(id: number) {
   return useSWR(`${urlBase}/${id}/detail`, GET);
 }
 

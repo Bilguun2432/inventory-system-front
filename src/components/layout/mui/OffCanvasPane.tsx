@@ -5,7 +5,6 @@ import { styled } from "@mui/material/styles";
 import Box, { BoxProps } from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import React from "react";
 
 interface OffCanvasProps extends BoxProps {
   open: boolean;

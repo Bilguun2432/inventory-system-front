@@ -1,5 +1,5 @@
 export interface ProductCategoryType {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
   enabled?: boolean;

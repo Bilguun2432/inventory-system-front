@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
-import LayoutMui from "./Layout";
+import LayoutMui from "./layout";
 import ModalProvider from "./ModalProvider";
-import React from "react";
 
 export default function index({ children }: { children: ReactNode }) {
   return (
