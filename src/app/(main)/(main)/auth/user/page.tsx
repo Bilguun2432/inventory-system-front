@@ -9,7 +9,7 @@ const pagePaths = [{ title: "Хэрэглэгч" }];
 export default function AuthUserPage() {
   return (
     <>
-      <PageHeader pageTitle="AuthUser List" pagePaths={pagePaths} />
+      <PageHeader pageTitle="Хэрэглэгчийн жагсаалт" pagePaths={pagePaths} />
       <AuthUserList />
     </>
   );

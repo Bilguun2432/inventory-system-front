@@ -16,7 +16,7 @@ import { ModalContext } from "@/components/layout/mui/ModalProvider";
 import OffCanvasPane from "@/components/layout/mui/OffCanvasPane";
 import { PaginationModelType, SortModelType } from "@/types/modules/common";
 import { ProductType } from "@/types/modules/product";
-import ProductNew from "./new";
+import ProductSelect from "./select";
 import FormFilter from "./FormFilter";
 import ProductThumb from "./Thumb";
 
@@ -89,7 +89,7 @@ export default function ProductList() {
   }
 
   function createNewClick() {
-    showModal("Create new Product", <ProductNew onComplete={onMutateComplete} />, "md");
+    showModal("Create new Product", <ProductSelect onComplete={onMutateComplete} />, "md");
   }
 
   function onFilterFormClose() {
@@ -170,15 +170,28 @@ export default function ProductList() {
           </IconButton>
         </Grid>
         <Grid item md={6}>
-          <Stack direction={"row"} justifyContent={"end"} sx={{ mb: 2 }}>
-            <Link href="/product/create" style={{ marginLeft: theme.spacing(1) }}>
-              <Button variant="outlined" size="small">
-                New
-              </Button>
-            </Link>
+          <Stack direction={"row"} justifyContent={"end"}>
+            <Button variant="outlined" size="small" onClick={createNewClick} sx={{ ml: theme.spacing(1) }}>
+              New
+            </Button>
           </Stack>
         </Grid>
       </Grid>
+
+      <Grid container spacing={3}>
+        {getItems().map(function (product: ProductType) {
+          return (
+            <Grid item key={`product_grid_${product.id}`} lg={3} md={4} sm={12}>
+              <ProductThumb product={product} />
+            </Grid>
+          );
+        })}
+      </Grid>
+
+      <OffCanvasPane open={showFilterForm} onClose={onFilterFormClose}>
+        <Typography>Product Filter Form</Typography>
+        <FormFilter onFilterSubmit={onFilterSubmit} />
+      </OffCanvasPane>
 
       <Grid container sx={{ mb: 2 }}>
         <Grid item md={6}></Grid>
@@ -198,21 +211,6 @@ export default function ProductList() {
           )}
         </Grid>
       </Grid>
-
-      <Grid container spacing={3}>
-        {getItems().map(function (product: ProductType) {
-          return (
-            <Grid item key={`product_grid_${product.id}`} lg={3} md={4} sm={12}>
-              <ProductThumb product={product} />
-            </Grid>
-          );
-        })}
-      </Grid>
-
-      <OffCanvasPane open={showFilterForm} onClose={onFilterFormClose}>
-        <Typography>Product Filter Form</Typography>
-        <FormFilter onFilterSubmit={onFilterSubmit} />
-      </OffCanvasPane>
     </>
   );
 }

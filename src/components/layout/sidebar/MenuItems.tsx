@@ -7,6 +7,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import StoreIcon from "@mui/icons-material/Store";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 type MenuItem = {
   id: string;
@@ -40,7 +41,13 @@ const MenuItems: MenuGroup[] = [
         id: uniqueId(),
         title: "Auth",
         icon: PersonAddIcon,
-        href: "/auth/",
+        href: "/auth/user/",
+      },
+      {
+        id: uniqueId(),
+        title: "Auth Role",
+        icon: ManageAccountsIcon,
+        href: "/auth/role/",
       },
       {
         id: uniqueId(),

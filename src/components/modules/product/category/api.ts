@@ -24,6 +24,10 @@ export function useUpdateSwr(id: number) {
   return useSWRMutation(`${urlBase}/${id}/update`, PUT);
 }
 
+export function useTotalSwr(id: number) {
+  return useSWRMutation(`${urlBase}/${id}/update`, PUT);
+}
+
 export const productCategoryAPI = {
   listFilter: (reqData: ProductCategoryListRequestType): Promise<AxiosResponse> => {
     return axios.post(`${urlBase}`, reqData);

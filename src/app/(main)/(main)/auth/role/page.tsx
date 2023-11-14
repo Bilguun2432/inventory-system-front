@@ -35,7 +35,7 @@ export default function AuthRolePermisionPage() {
     <>
       <PageHeader pageTitle="AuthRole List" pagePaths={pagePaths} />
       <Stack direction={"row"} justifyContent={"end"} sx={{ mb: theme.spacing(2) }}>
-        <Button variant="outlined" size="small" color="secondary" onClick={createNewClick} sx={{ ml: theme.spacing(1) }}>
+        <Button variant="outlined" size="small" onClick={createNewClick} sx={{ ml: theme.spacing(1) }}>
           New
         </Button>
       </Stack>

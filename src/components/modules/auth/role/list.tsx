@@ -19,8 +19,8 @@ interface ListProps {
 
 export default function AuthRoleList(props: ListProps) {
   // const { onModalEdit } = props;
-  // const { data, error, isLoading, mutate } = useListSwr();
-  const { data } = useListSwr();
+  const { data, error, isLoading, mutate } = useListSwr();
+  // const { data } = useListSwr();
 
   // function btnEditClick(entity: AuthRoleType) {
   //   if (onModalEdit) {
@@ -47,9 +47,7 @@ export default function AuthRoleList(props: ListProps) {
                 data.data.map(function (authRole: any) {
                   return (
                     <TableRow key={`authRole_row_${authRole.id}`}>
-                      <TableCell className="p-1 border border-slate-300 text-center font-bold">
-                        {authRole.id}
-                      </TableCell>
+                      <TableCell className="p-1 border border-slate-300 text-center font-bold">{authRole.id}</TableCell>
                       <TableCell>{authRole.name}</TableCell>
                       <TableCell>{authRole.description}</TableCell>
                       <TableCell>
@@ -59,32 +57,6 @@ export default function AuthRoleList(props: ListProps) {
                           </IconButton>
                         </Link>
                       </TableCell>
-                      {/* <TableCell>
-                        <Link href={`/auth/role/${authRole.id}/edit`}>
-                          <Button variant="text" size="small" color="warning">
-                            <EditIcon />
-                          </Button>
-                        </Link>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="warning"
-                          onClick={() => {
-                            btnEditClick(authRole);
-                          }}
-                        >
-                          <EditIcon />
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <Link
-                          href={`/auth/role/${authRole.id}/permission/detail`}
-                        >
-                          <Button variant="text" size="small" color="warning">
-                            <EditIcon />
-                          </Button>
-                        </Link>
-                      </TableCell> */}
                     </TableRow>
                   );
                 })}

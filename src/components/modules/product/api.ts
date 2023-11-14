@@ -27,12 +27,8 @@ export function useUpdateSwr(id: number) {
   return useSWRMutation(`${urlBase}/${id}/update`, PUT);
 }
 
-export function useUpdateTranslateSwr(id: number, locale: string) {
-  return useSWRMutation(`${urlBase}/${id}/translate/${locale}/edit`, POST);
-}
-
-export function useDetailTranslateSwr(id: number, locale: string) {
-  return useSWR(`${urlBase}/${id}/translate/${locale}/get`, GET);
+export function useCategorySwr() {
+  return useSWR(`${urlBase}/category/name`, GET);
 }
 
 export function useSearchSwr(name?: string, description?: string, pricemin?: number, pricemax?: number) {

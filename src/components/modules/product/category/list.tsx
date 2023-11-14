@@ -12,7 +12,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect, MouseEvent, ChangeEvent, useContext } from "react";
 import TablePagination from "@mui/material/TablePagination";
-import { productCategoryAPI } from "./api";
+import { productCategoryAPI, useTotalSwr } from "./api";
 import { ProductCategoryType } from "@/types/modules/product";
 import { PaginationModelType, SortModelType } from "@/types/modules/common";
 import Grid from "@mui/material/Grid";
@@ -26,6 +26,8 @@ import FormFilter from "./FormFilter";
 import { ModalContext } from "@/components/layout/mui/ModalProvider";
 import ProductCategoryNew from "./new";
 import ProductCategoryEdit from "./edit";
+import Link from "next/link";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 export interface ProductCategoryPaginationModelType extends PaginationModelType {
   items?: ProductCategoryType[];
@@ -175,7 +177,7 @@ export default function ProductCategoryList() {
 
         <Grid item md={6}>
           <Stack direction={"row"} justifyContent={"end"}>
-            <Button variant="outlined" size="small" color="secondary" onClick={createNewClick} sx={{ ml: theme.spacing(1) }}>
+            <Button variant="outlined" size="small" onClick={createNewClick} sx={{ ml: theme.spacing(1) }}>
               New
             </Button>
           </Stack>
@@ -192,6 +194,7 @@ export default function ProductCategoryList() {
                 <TableCell>Тайлбар</TableCell>
                 <TableCell>Үүсгэсэн огноо</TableCell>
                 <TableCell>Засах</TableCell>
+                <TableCell>Дэлгэрэнгүй</TableCell>
               </TableRow>
             </TableHead>
 
@@ -216,6 +219,13 @@ export default function ProductCategoryList() {
                           Edit
                         </Button>
                       </ButtonGroup>
+                    </TableCell>
+                    <TableCell>
+                      <Link href={`/product/category/${productCategory.id}/detail`}>
+                        <IconButton size="medium" color="primary">
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 );

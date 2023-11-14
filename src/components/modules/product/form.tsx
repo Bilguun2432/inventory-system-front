@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-
+import Typography from "@mui/material/Typography";
 import { useCreateSwr, useUpdateSwr, useDetailSwr } from "./api";
 import { ProductType } from "@/types/modules/product";
 // import { AxiosError, AxiosResponse } from "axios";
@@ -20,16 +20,19 @@ import { useRef, useEffect, useState } from "react";
 interface FormProps {
   id?: number;
   product?: ProductType;
+  selectedCategory?: string;
   onComplete?: () => void;
 }
 
 export default function ProductForm(props: FormProps) {
   const [entityLoading, setEntityLoading] = useState<boolean>(true);
   const theme = useTheme();
-  const { id, product, onComplete } = props;
+  const { id, product, selectedCategory, onComplete } = props;
   const { trigger: triggerCreate } = useCreateSwr();
   const { trigger: triggerUpdate } = useUpdateSwr(id && id > 0 ? id : 0);
   const { data, error, isLoading } = useDetailSwr(id && id > 0 ? id : 0);
+
+  console.log("hh", selectedCategory);
 
   const entityEdit = useRef<ProductType | null>(null);
 
@@ -44,14 +47,11 @@ export default function ProductForm(props: FormProps) {
   }, [data, isLoading, error]);
 
   const validationSchema = yup.object({
-    categoryId: yup.number(),
     name: yup.string().required(),
     description: yup.string(),
     price: yup.number(),
-    packageCode: yup.string(),
-    productConfId: yup.number().required(),
+    unit: yup.number(),
 
-    productCompletionId: yup.number().required(),
     enabled: yup.boolean().default(false),
   });
 
@@ -62,6 +62,7 @@ export default function ProductForm(props: FormProps) {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const onSubmit = (data: any) => {
+    data.category = selectedCategory;
     let mutatePromise;
     if (entityEdit.current && entityEdit.current.id) {
       console.log("hi", data);
@@ -88,6 +89,17 @@ export default function ProductForm(props: FormProps) {
   return (
     <Box sx={{ my: theme.spacing(2) }}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Box sx={{ mb: theme.spacing(4) }}>
+          <TextField
+            label={"Category"}
+            value={selectedCategory}
+            fullWidth
+            size="medium"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Box>
         <Box sx={{ mb: theme.spacing(4) }}>
           <TextField
             label={"Name"}
@@ -128,13 +140,13 @@ export default function ProductForm(props: FormProps) {
 
         <Box sx={{ mb: theme.spacing(4) }}>
           <TextField
-            label={"Package Code"}
-            {...register("packageCode")}
-            defaultValue={data ? data.packageCode : ""}
+            label={"unit"}
+            {...register("unit")}
+            defaultValue={data ? data.unit : ""}
             fullWidth
             size="medium"
-            error={errors.name ? true : false}
-            helperText={errors.name?.message}
+            error={errors.unit ? true : false}
+            helperText={errors.unit?.message}
           />
         </Box>
 

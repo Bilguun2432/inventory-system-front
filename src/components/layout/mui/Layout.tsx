@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 const MainWrapper = styled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
+  paddingTop: "60px",
   width: "100%",
 }));
 

@@ -5,7 +5,7 @@ export default function AuthRoleUserPage() {
   return (
     <>
       <CustomizedBreadcrumbs />
-      <div>Auth Index</div>;
+      <div>Auth Index</div>
     </>
   );
 }

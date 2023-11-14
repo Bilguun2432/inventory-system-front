@@ -178,7 +178,7 @@ export default function AuthUserList() {
 
         <Grid item md={6}>
           <Stack direction={"row"} justifyContent={"end"} sx={{ mb: theme.spacing(2) }}>
-            <Button variant="outlined" size="small" color="primary" onClick={createNewClick} sx={{ ml: theme.spacing(1) }}>
+            <Button variant="outlined" size="small" onClick={createNewClick}>
               New
             </Button>
           </Stack>
