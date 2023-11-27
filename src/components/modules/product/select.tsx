@@ -3,6 +3,8 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 
 import ProductForm from "./form";
@@ -12,10 +14,10 @@ interface ProductNewProps {
   onComplete?: () => void;
 }
 
-export default function ProductNew(props: ProductNewProps) {
+export default function ProductSelect(props: ProductNewProps) {
   const theme = useTheme();
   const { onComplete } = props;
-  const { data: triggerCategory } = useCategorySwr();
+  const { data: triggerCategory, mutate } = useCategorySwr();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [formVisible, setFormVisible] = useState(false);
 
@@ -29,6 +31,7 @@ export default function ProductNew(props: ProductNewProps) {
 
   const handleSubmit = () => {
     if (onComplete) {
+      mutate();
       onComplete();
     }
   };
@@ -39,15 +42,18 @@ export default function ProductNew(props: ProductNewProps) {
         <ProductForm onComplete={() => handleSubmit()} selectedCategory={triggerCategory[selectedCategory || ""]} />
       ) : (
         <>
-          <Select label="Category" fullWidth defaultValue="" onChange={handleSelectChange as any}>
-            {(Object.entries(triggerCategory || {}) as [string, string][]).map(([key, category]) => (
-              <MenuItem key={key} value={String(key)}>
-                {category}
-              </MenuItem>
-            ))}
-          </Select>
-          <br></br>
-          <br></br>
+          <FormControl fullWidth>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select labelId="category-label" label="Category" value={selectedCategory || ""} onChange={handleSelectChange as any}>
+              {(Object.entries(triggerCategory || {}) as [string, string][]).map(([key, category]) => (
+                <MenuItem key={key} value={key}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <br />
+          <br />
           <Button variant="contained" onClick={handleShowForm} sx={{ ml: 40 }} disabled={!selectedCategory}>
             Submit
           </Button>

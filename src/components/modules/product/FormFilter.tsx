@@ -44,21 +44,12 @@ export default function FormFilter({ onFilterSubmit }: FormFilterProps) {
       <Box sx={{ my: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ mb: 4 }}>
-            <TextField
-              label={"Name"}
-              {...register("name")}
-              defaultValue={""}
-              fullWidth
-              size="medium"
-              error={errors.name ? true : false}
-              helperText={errors.name?.message}
-            />
+            <TextField label={"Name"} {...register("name")} fullWidth size="medium" error={errors.name ? true : false} helperText={errors.name?.message} />
           </Box>
           <Box sx={{ mb: 4 }}>
             <TextField
               label={"Description"}
               {...register("description")}
-              defaultValue={""}
               fullWidth
               size="medium"
               error={errors.description ? true : false}
@@ -70,7 +61,6 @@ export default function FormFilter({ onFilterSubmit }: FormFilterProps) {
             <TextField
               label={"Price minimum"}
               {...register("priceMin")}
-              defaultValue={null}
               fullWidth
               size="medium"
               error={errors.priceMin ? true : false}
@@ -81,7 +71,6 @@ export default function FormFilter({ onFilterSubmit }: FormFilterProps) {
             <TextField
               label={"Price maximum"}
               {...register("priceMax")}
-              defaultValue={null}
               fullWidth
               size="medium"
               error={errors.priceMax ? true : false}

@@ -5,7 +5,7 @@ import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Box from "@mui/material/Box";
 import Chip, { ChipProps } from "@mui/material/Chip";
-import HomeIcon from "@mui/icons-material/Home";
+import StoreIcon from "@mui/icons-material/Store";
 
 export interface CrumbProps extends ChipProps {
   url?: string;
@@ -33,7 +33,7 @@ export default function Breadcrumb({ paths }: { paths: CrumbProps[] }) {
     <>
       <Breadcrumbs aria-label="breadcrumb">
         <Link href={"/"}>
-          <Crumb label="Нүүр" icon={<HomeIcon fontSize="small" />} />
+          <Crumb label="Агуулах" icon={<StoreIcon fontSize="small" />} />
         </Link>
         {paths?.map((path: CrumbProps, index: number) => {
           return (

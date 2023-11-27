@@ -8,6 +8,8 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import StoreIcon from "@mui/icons-material/Store";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import SellIcon from "@mui/icons-material/Sell";
+import AssignmentReturnedIcon from "@mui/icons-material/AssignmentReturned";
 
 type MenuItem = {
   id: string;
@@ -27,15 +29,9 @@ const MenuItems: MenuGroup[] = [
     items: [
       {
         id: uniqueId(),
-        title: "Home",
-        icon: HomeIcon,
-        href: "/",
-      },
-      {
-        id: uniqueId(),
         title: "Storage",
         icon: StoreIcon,
-        href: "/storage/",
+        href: "/",
       },
       {
         id: uniqueId(),
@@ -69,7 +65,7 @@ const MenuItems: MenuGroup[] = [
       },
       {
         id: uniqueId(),
-        title: "Archive",
+        title: "Broken Product",
         icon: ArchiveIcon,
         href: "/archive/",
       },
@@ -82,10 +78,27 @@ const MenuItems: MenuGroup[] = [
         id: uniqueId(),
         title: "Products to be delivered",
         icon: DeliveryDiningIcon,
-        href: "/employee/product",
+        href: "/employee/product/",
+      },
+      {
+        id: uniqueId(),
+        title: "Sold out",
+        icon: SellIcon,
+        href: "/employee/sold/",
+      },
+      {
+        id: uniqueId(),
+        title: "Broken Product",
+        icon: ArchiveIcon,
+        href: "/employee/broken/product/",
+      },
+      {
+        id: uniqueId(),
+        title: "Returned",
+        icon: AssignmentReturnedIcon,
+        href: "/employee/returned/",
       },
     ],
   },
 ];
-
 export default MenuItems;

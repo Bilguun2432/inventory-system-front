@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
+import { useSession } from "next-auth/react";
 import admnAxios from "@/lib/axios/admn/axios";
 import fileAxios from "@/lib/axios/file/axios";
 import cmrcAxios from "@/lib/axios/cmrc/axios";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loader/loader";
-import { useSession } from "next-auth/react";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -15,21 +15,24 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   console.log({ sessionStatus, session: sessionData });
 
-  useEffect(() => {
-    if (sessionStatus === "authenticated") {
-      const accessToken = sessionData.tokens?.access;
+  useEffect(
+    function () {
+      if (sessionStatus === "authenticated") {
+        const { tokens }: any = sessionData;
 
-      if (accessToken) {
-        admnAxios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-        fileAxios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-        cmrcAxios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+        admnAxios.defaults.headers.common["Authorization"] = `Bearer ${tokens.access}`;
+
+        fileAxios.defaults.headers.common["Authorization"] = `Bearer ${tokens.access}`;
+
+        cmrcAxios.defaults.headers.common["Authorization"] = `Bearer ${tokens.access}`;
+
+        setLoading(false);
+      } else if (sessionStatus === "unauthenticated") {
+        router.push("/auth/login");
       }
-
-      setLoading(false);
-    } else if (sessionStatus === "unauthenticated") {
-      router.push("/auth/login");
-    }
-  }, [router, sessionStatus, sessionData]);
+    },
+    [router, sessionStatus, sessionData],
+  );
 
   return <>{loading ? <Loading /> : <>{children}</>}</>;
 }

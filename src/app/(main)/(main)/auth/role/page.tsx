@@ -27,10 +27,6 @@ export default function AuthRolePermisionPage() {
     showModal("Create new AuthRole", <AuthRoleForm onComplete={onMutateComplete} />);
   }
 
-  function onModalEdit(clientProductType: AuthRoleType) {
-    showModal(`Edit AuthRole /${clientProductType.name}/`, <AuthRoleForm id={clientProductType.id} onComplete={onMutateComplete} />);
-  }
-
   return (
     <>
       <PageHeader pageTitle="AuthRole List" pagePaths={pagePaths} />
@@ -39,7 +35,7 @@ export default function AuthRolePermisionPage() {
           New
         </Button>
       </Stack>
-      <AuthRoleList onModalEdit={onModalEdit} />
+      <AuthRoleList />
     </>
   );
 }

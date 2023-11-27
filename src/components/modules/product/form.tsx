@@ -16,43 +16,33 @@ import { ProductType } from "@/types/modules/product";
 // import { AxiosError, AxiosResponse } from "axios";
 import { AxiosError } from "axios";
 import { useRef, useEffect, useState } from "react";
+import dataURLtoFile from "./file";
+import { useSession } from "next-auth/react";
+import { useDetailEmailSwr } from "./userapi";
 
 interface FormProps {
-  id?: number;
-  product?: ProductType;
+  product?: any;
   selectedCategory?: string;
   onComplete?: () => void;
 }
 
 export default function ProductForm(props: FormProps) {
-  const [entityLoading, setEntityLoading] = useState<boolean>(true);
   const theme = useTheme();
-  const { id, product, selectedCategory, onComplete } = props;
+  const { product, selectedCategory, onComplete } = props;
   const { trigger: triggerCreate } = useCreateSwr();
-  const { trigger: triggerUpdate } = useUpdateSwr(id && id > 0 ? id : 0);
-  const { data, error, isLoading } = useDetailSwr(id && id > 0 ? id : 0);
+  const { trigger: triggerUpdate } = useUpdateSwr(product?.id && product?.id > 0 ? product?.id : 0);
 
-  console.log("hh", selectedCategory);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
-  const entityEdit = useRef<ProductType | null>(null);
+  const { data } = useSession();
 
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-    const clientLoad: ProductType = { ...data };
-    entityEdit.current = clientLoad;
-    console.log("entityEdit", entityEdit);
-    setEntityLoading(false);
-  }, [data, isLoading, error]);
+  const { data: authUser } = useDetailEmailSwr(data?.user?.email);
 
   const validationSchema = yup.object({
     name: yup.string().required(),
     description: yup.string(),
     price: yup.number(),
     unit: yup.number(),
-
-    enabled: yup.boolean().default(false),
   });
 
   const {
@@ -62,28 +52,111 @@ export default function ProductForm(props: FormProps) {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const onSubmit = (data: any) => {
-    data.category = selectedCategory;
+    // let formData = new FormData();
+    // formData.append("category", "Хувцас");
+
+    // fetch("http://localhost:8000/_admn/product/create", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("Server response:", data);
+    //     // Handle the response data as needed
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //     // Handle errors
+    //   });
+
+    if (selectedCategory !== null && selectedCategory !== undefined) {
+      data.category = selectedCategory;
+    }
+
+    if (imageSrc) {
+      const timestamp = new Date().getTime();
+      const filename = `uploaded_image_${timestamp}.jpg`;
+      const file = dataURLtoFile(imageSrc, filename);
+      data.image = file;
+    }
+
     let mutatePromise;
-    if (entityEdit.current && entityEdit.current.id) {
+
+    if (product && product.id) {
       console.log("hi", data);
-      mutatePromise = triggerUpdate(data);
+      // mutatePromise = triggerUpdate(formData);
+      let formData: any = new FormData();
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("price", data.price);
+      formData.append("authUserId", authUser?.id);
+      formData.append("unit", data.unit);
+      formData.append("image", data.image);
+
+      fetch(`http://localhost:8000/_admn/product/${product.id}/update`, {
+        method: "PUT",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Server response:", data);
+          if (onComplete) onComplete();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      console.log(mutatePromise);
     } else {
+      let formData: any = new FormData();
+      formData.append("category", data.category);
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("price", data.price);
+      formData.append("id", authUser?.id);
+      formData.append("unit", data.unit);
+      formData.append("image", data.image);
       console.log("data=>", data);
-      mutatePromise = triggerCreate(data);
+      // mutatePromise = triggerCreate(formData);
+      fetch("http://localhost:8000/_admn/product/create", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Server response:", data);
+          if (onComplete) onComplete();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      console.log(mutatePromise);
     }
 
     console.log("mutatePromise", mutatePromise);
 
-    mutatePromise
-      // .then(function (response: AxiosResponse) {
-      .then(function () {
-        if (onComplete) {
-          onComplete();
-        }
-      })
-      .catch(function (error: AxiosError) {
-        console.log({ error });
-      });
+    // mutatePromise
+    //   .then(function () {
+    //     if (onComplete) {
+    //       onComplete();
+    //     }
+    //   })
+    //   .catch(function (error: AxiosError) {
+    //     console.log({ error });
+    //   });
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setImageSrc(result);
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -93,6 +166,7 @@ export default function ProductForm(props: FormProps) {
           <TextField
             label={"Category"}
             value={selectedCategory}
+            defaultValue={product ? product.category.name : ""}
             fullWidth
             size="medium"
             InputProps={{
@@ -104,19 +178,18 @@ export default function ProductForm(props: FormProps) {
           <TextField
             label={"Name"}
             {...register("name")}
-            defaultValue={data ? data.name : ""}
+            defaultValue={product ? product.name : ""}
             fullWidth
             size="medium"
             error={errors.name ? true : false}
             helperText={errors.name?.message}
           />
         </Box>
-
         <Box sx={{ mb: theme.spacing(4) }}>
           <TextField
             label={"Description"}
             {...register("description")}
-            defaultValue={data ? data.description : ""}
+            defaultValue={product ? product.description : ""}
             fullWidth
             size="medium"
             error={errors.description ? true : false}
@@ -125,24 +198,22 @@ export default function ProductForm(props: FormProps) {
             rows={3}
           />
         </Box>
-
         <Box sx={{ mb: theme.spacing(4) }}>
           <TextField
             label={"Price"}
             {...register("price")}
-            defaultValue={data ? data.price : ""}
+            defaultValue={product ? product.price : ""}
             fullWidth
             size="medium"
             error={errors.price ? true : false}
             helperText={errors.price?.message}
           />
         </Box>
-
         <Box sx={{ mb: theme.spacing(4) }}>
           <TextField
             label={"unit"}
             {...register("unit")}
-            defaultValue={data ? data.unit : ""}
+            defaultValue={product ? product.unit : ""}
             fullWidth
             size="medium"
             error={errors.unit ? true : false}
@@ -150,8 +221,18 @@ export default function ProductForm(props: FormProps) {
           />
         </Box>
 
-        <Box>
-          <FormControlLabel control={<Checkbox defaultChecked={data ? data.enabled : false} {...register("enabled")} />} label="Enabled" />
+        {imageSrc && (
+          <Box sx={{ mb: theme.spacing(4) }}>
+            <Typography variant="h6">Uploaded Picture:</Typography>
+            <img src={imageSrc} alt="Uploaded" style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }} />
+          </Box>
+        )}
+
+        <Box sx={{ mb: theme.spacing(4) }}>
+          <Button variant="contained" component="label" color="primary">
+            Upload Picture
+            <input id="fileInput" type="file" accept=".pdf, .png, .jpg, .jpeg" onChange={handleFileChange} style={{ display: "none" }} />
+          </Button>
         </Box>
 
         <Stack direction={"row"} justifyContent={"end"} sx={{ mb: theme.spacing(4) }}>

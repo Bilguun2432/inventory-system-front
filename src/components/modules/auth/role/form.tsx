@@ -51,8 +51,7 @@ export default function AuthRoleForm(props: FormProps) {
   const onSubmit = async (data: any) => {
     try {
       let result;
-      if (entityEdit.current && entityEdit.current.id)
-        result = await triggerUpdate(data);
+      if (entityEdit.current && entityEdit.current.id) result = await triggerUpdate(data);
       else result = await triggerCreate(data);
       console.log({ result });
       if (onComplete) {
@@ -84,9 +83,7 @@ export default function AuthRoleForm(props: FormProps) {
             <TextField
               label={"Description"}
               {...register("description")}
-              defaultValue={
-                entityEdit.current ? entityEdit.current.description : ""
-              }
+              defaultValue={entityEdit.current ? entityEdit.current.description : ""}
               fullWidth
               multiline
               rows={3}
@@ -96,17 +93,8 @@ export default function AuthRoleForm(props: FormProps) {
             />
           </Box>
 
-          <Stack
-            direction={"row"}
-            justifyContent={"end"}
-            sx={{ mb: theme.spacing(4) }}
-          >
-            <Button
-              type={"submit"}
-              variant="outlined"
-              color="primary"
-              size="medium"
-            >
+          <Stack direction={"row"} justifyContent={"end"} sx={{ mb: theme.spacing(4) }}>
+            <Button type={"submit"} variant="outlined" color="primary" size="medium">
               Save
             </Button>
           </Stack>

@@ -41,7 +41,7 @@ export function useListSwr() {
 }
 
 export function useDetailSwr(id: number) {
-  return useSWR(`${urlBase}/${id}`, getRequest);
+  return useSWR(`${urlBase}/${id}/detail`, getRequest);
 }
 
 export function useCreateSwr() {

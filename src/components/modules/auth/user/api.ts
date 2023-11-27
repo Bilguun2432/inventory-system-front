@@ -6,26 +6,34 @@ import { AxiosResponse } from "axios";
 import axios from "@/lib/axios/admn/axios";
 
 const entryPoint = process.env.NEXT_PUBLIC_ADMN_URL ?? "";
-const urlBase = entryPoint + "/auth/user";
+const urlBase = entryPoint + "/auth";
 
 export const useListSwr = () => {
-  return useSWR(`${urlBase}/`, GET);
+  return useSWR(`${urlBase}/user/`, GET);
 };
 
-export function useDetailSwr(id: number) {
-  return useSWR(`${urlBase}/${id}`, GET);
+export function useDetailSwr(id?: number) {
+  return useSWR(`${urlBase}/user/${id}/detail`, GET);
+}
+
+export function useListRoleSwr() {
+  return useSWR(`${urlBase}/role`, GET);
 }
 
 export function useCreateSwr() {
-  return useSWRMutation(`${urlBase}/create`, POST);
+  return useSWRMutation(`${urlBase}/user/create`, POST);
 }
 
 export function useUpdateSwr(id: number) {
-  return useSWRMutation(`${urlBase}/${id}/update`, PUT);
+  return useSWRMutation(`${urlBase}/user/${id}/update`, PUT);
+}
+
+export function useUserSwr() {
+  return useSWR(`${urlBase}/user/employee`, GET);
 }
 
 export const authUserAPI = {
   listFilter: (reqData: AuthUserListRequestType): Promise<AxiosResponse> => {
-    return axios.post(`${urlBase}`, reqData);
+    return axios.post(`${urlBase}/user`, reqData);
   },
 };

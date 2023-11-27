@@ -18,9 +18,10 @@ export default function FormFilter({ onFilterSubmit }: FormFilterProps) {
   const validationSchema = yup.object({
     firstname: yup.string(),
     lastname: yup.string(),
-    userType: yup.string(),
     email: yup.string(),
-    mobile: yup.number(),
+    mobile: yup.number().transform((value, originalValue) => {
+      return originalValue === "" ? 0 : Number(originalValue);
+    }),
   });
 
   const {
@@ -65,18 +66,6 @@ export default function FormFilter({ onFilterSubmit }: FormFilterProps) {
 
           <Box sx={{ mb: 4 }}>
             <TextField
-              label={"userType"}
-              {...register("userType")}
-              defaultValue={""}
-              fullWidth
-              size="medium"
-              error={errors.userType ? true : false}
-              helperText={errors.userType?.message}
-            />
-          </Box>
-
-          <Box sx={{ mb: 4 }}>
-            <TextField
               label={"email"}
               {...register("email")}
               defaultValue={""}
@@ -100,7 +89,7 @@ export default function FormFilter({ onFilterSubmit }: FormFilterProps) {
           </Box>
 
           <Stack direction={"row"} justifyContent={"end"} sx={{ mb: 4 }}>
-            <Button type={"submit"} variant="outlined" color="primary" startIcon={<SearchIcon />}>
+            <Button type={"submit"} variant="outlined" color="info" startIcon={<SearchIcon />}>
               Search
             </Button>
           </Stack>

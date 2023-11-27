@@ -1,7 +1,8 @@
-import axios from "@/lib/axios/admn/axios";
-import { AxiosResponse } from "axios";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import { ProductListRequestType } from "./list";
+import { AxiosResponse } from "axios";
+import axios from "@/lib/axios/admn/axios";
 
 const entryPoint = process.env.NEXT_PUBLIC_ADMN_URL ?? "";
 const urlBase = entryPoint + "/product";
@@ -41,12 +42,14 @@ export function useListSwr() {
 }
 
 export function useDetailSwr(id: number | string | string[]) {
-  return useSWR(`${urlBase}/category/${id}/detail`, getRequest);
+  return useSWR(`${urlBase}/${id}/detail`, getRequest);
 }
 
-export function useProductSwr(id: number | string | string[]) {
-  return useSWR(`/${id}/product`, getRequest);
-}
+export const productAPI = {
+  listFilter: (id: number, reqData: ProductListRequestType): Promise<AxiosResponse> => {
+    return axios.post(`/${id}/product`, reqData);
+  },
+};
 
 export function useProductUnitSwr(id: number | string | string[]) {
   return useSWR(`/${id}/unit`, getRequest);
@@ -56,6 +59,14 @@ export function useCreateSwr() {
   return useSWRMutation(`${urlBase}/category/create`, postRequest);
 }
 
+export function useProductCreateSwr() {
+  return useSWRMutation(`${urlBase}/create`, postRequest);
+}
+
 export function useUpdateSwr(id: number) {
-  return useSWRMutation(`${urlBase}/category/${id}/update`, putRequest);
+  return useSWRMutation(`${urlBase}/${id}/update`, putRequest);
+}
+
+export function useCategoryDetailSwr(id?: number | string | string[]) {
+  return useSWR(`${urlBase}/category/${id}/detail`, getRequest);
 }

@@ -42,6 +42,7 @@ export function useSearchSwr(name?: string, description?: string, pricemin?: num
 
 export const productAPI = {
   listFilter: (reqData: ProductListRequestType): Promise<AxiosResponse> => {
+    console.log("hi", reqData);
     return axios.post(`${urlBase}`, reqData);
   },
 };

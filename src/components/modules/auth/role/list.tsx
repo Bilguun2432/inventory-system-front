@@ -10,23 +10,34 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import IconButton from "@mui/material/IconButton";
-
 import { useListSwr } from "./api";
 import { AuthRoleType } from "@/types/modules/auth_role";
-interface ListProps {
-  onModalEdit?: (productCategory: AuthRoleType) => void;
-}
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "@mui/material/Button";
+import AuthRoleEdit from "@/components/modules/auth/role/edit";
+import { ModalContext } from "@/components/layout/mui/ModalProvider";
+import { useContext } from "react";
+import { useTheme } from "@mui/material/styles";
 
-export default function AuthRoleList(props: ListProps) {
-  // const { onModalEdit } = props;
+export default function AuthRoleList() {
+  const modalContext = useContext(ModalContext);
+  if (modalContext === undefined) {
+    throw new Error("ModalContext undefined");
+  }
+  const { showModal, hideModal } = modalContext;
+
+  const theme = useTheme();
+
+  async function onMutateComplete() {
+    hideModal();
+    await mutate();
+  }
+
   const { data, error, isLoading, mutate } = useListSwr();
-  // const { data } = useListSwr();
 
-  // function btnEditClick(entity: AuthRoleType) {
-  //   if (onModalEdit) {
-  //     onModalEdit(entity);
-  //   }
-  // }
+  function btnEditClick(authRole: AuthRoleType) {
+    showModal(`Edit AuthRole /${authRole.name}/`, <AuthRoleEdit id={authRole.id} onComplete={onMutateComplete} />, "md");
+  }
 
   return (
     <>
@@ -35,27 +46,34 @@ export default function AuthRoleList(props: ListProps) {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>name</TableCell>
-              <TableCell>description</TableCell>
-              <TableCell>detail</TableCell>
+              <TableCell>Нэр</TableCell>
+              <TableCell>Тайлбар</TableCell>
+              <TableCell>Засах</TableCell>
             </TableRow>
           </TableHead>
 
           {typeof data === "object" && (
             <TableBody>
-              {data.data &&
-                data.data.map(function (authRole: any) {
+              {data &&
+                data.map(function (authRole: AuthRoleType) {
                   return (
                     <TableRow key={`authRole_row_${authRole.id}`}>
                       <TableCell className="p-1 border border-slate-300 text-center font-bold">{authRole.id}</TableCell>
                       <TableCell>{authRole.name}</TableCell>
                       <TableCell>{authRole.description}</TableCell>
                       <TableCell>
-                        <Link href={`/auth/role/${authRole.id}/detail`}>
-                          <IconButton size="medium">
-                            <VisibilityIcon />
-                          </IconButton>
-                        </Link>
+                        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ ml: theme.spacing(0) }}
+                            onClick={() => {
+                              btnEditClick(authRole);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        </ButtonGroup>
                       </TableCell>
                     </TableRow>
                   );

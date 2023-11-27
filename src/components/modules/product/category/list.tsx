@@ -51,8 +51,8 @@ export interface ProductCategorysPagedType {
   items: ProductCategoryType[];
 }
 
-const pageSizeOptions = [10, 20, 40, 100];
-const pageSizeDefault = 20;
+const pageSizeOptions = [20, 40, 60, 100];
+const pageSizeDefault = 10;
 
 const initialListRequest = {
   filter: {},
@@ -171,7 +171,7 @@ export default function ProductCategoryList() {
               setShowFilterForm(!showFilterForm);
             }}
           >
-            <SearchIcon fontSize="large" />
+            <SearchIcon fontSize="large" color="primary" />
           </IconButton>
         </Grid>
 
@@ -221,6 +221,7 @@ export default function ProductCategoryList() {
                       </ButtonGroup>
                     </TableCell>
                     <TableCell>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link href={`/product/category/${productCategory.id}/detail`}>
                         <IconButton size="medium" color="primary">
                           <VisibilityIcon />

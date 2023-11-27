@@ -4,8 +4,8 @@ import * as React from "react";
 import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
-import HomeIcon from "@mui/icons-material/Home";
 import { Link } from "@mui/material";
+import StoreIcon from "@mui/icons-material/Store";
 
 const CustomizedBreadcrumbs = () => {
   const [pageUrl, setPageUrl] = React.useState<string>("");
@@ -24,12 +24,7 @@ const CustomizedBreadcrumbs = () => {
       currentLink = currentLink + `/${crumb}`;
       return (
         <div key={"breadcrumb" + crumb} className="crumb">
-          <Link
-            key={"breadcrumbs" + crumb}
-            underline="none"
-            href={currentLink}
-            style={{ color: "black" }}
-          >
+          <Link key={"breadcrumbs" + crumb} underline="none" href={currentLink} style={{ color: "black" }}>
             {crumb}
           </Link>
         </div>
@@ -39,29 +34,16 @@ const CustomizedBreadcrumbs = () => {
   return (
     <div role="presentation">
       <Breadcrumbs aria-label="breadcrumb">
-        <StyledBreadcrumb
-          component="a"
-          href="/"
-          label="Home"
-          icon={<HomeIcon fontSize="small" />}
-        />
+        <StyledBreadcrumb component="a" href="/" label="Storage" icon={<StoreIcon fontSize="small" />} />
         {crumbs?.map((el, index) => {
-          return (
-            <StyledBreadcrumb
-              key={"styledBread" + index}
-              label={crumbs[index]}
-            />
-          );
+          return <StyledBreadcrumb key={"styledBread" + index} label={crumbs[index]} />;
         })}
       </Breadcrumbs>
     </div>
   );
 };
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-  const backgroundColor =
-    theme.palette.mode === "light"
-      ? theme.palette.grey[100]
-      : theme.palette.grey[800];
+  const backgroundColor = theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[800];
   return {
     backgroundColor,
     height: theme.spacing(3),

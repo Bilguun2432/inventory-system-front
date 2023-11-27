@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { ModalContext } from "@/components/layout/mui/ModalProvider";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ProductList from "@/components/modules/product/category/detail/list";
-import { useDetailSwr } from "@/components/modules/product/category/detail/api";
+import { useCategoryDetailSwr } from "@/components/modules/product/category/detail/api";
 import PageHeader from "@/components/layout/mui/PageHeader";
 
 const pagePaths = [{ title: "Ангилал", url: "/product/category" }, { title: "Дэлгэрэнгүй" }];
@@ -20,7 +20,7 @@ const pagePaths = [{ title: "Ангилал", url: "/product/category" }, { titl
 export default function ProductCategoryDetail() {
   const theme = useTheme();
   const { id } = useParams();
-  const { data, mutate } = useDetailSwr(id);
+  const { data, mutate } = useCategoryDetailSwr(id);
   const { showModal, hideModal }: any = useContext(ModalContext);
 
   async function onMutateComplete() {

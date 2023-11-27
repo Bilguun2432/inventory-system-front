@@ -14,12 +14,14 @@ interface EditProps {
 export default function ProductEdit(props: EditProps) {
   const theme = useTheme();
   const { id, onComplete } = props;
-  // const { data, error, isLoading } = useDetailSwr(id);
-  const { data } = useDetailSwr(id);
+  const { data, mutate } = useDetailSwr(id);
 
-  return (
-    <Box sx={{ my: theme.spacing(2) }}>
-      {data && <AuthRoleForm id={id} onComplete={onComplete} />}
-    </Box>
-  );
+  function onUpdateComplete() {
+    if (onComplete) {
+      onComplete();
+      mutate();
+    }
+  }
+
+  return <Box sx={{ my: theme.spacing(2) }}>{data && <AuthRoleForm id={id} onComplete={onUpdateComplete} />}</Box>;
 }

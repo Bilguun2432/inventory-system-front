@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import React from "react";
-
 type AuthFormValues = {
   username: string;
   password: string;
@@ -34,7 +33,7 @@ export default function LoginForm() {
       redirect: true,
     });
 
-    console.log({ error, status, ok, url });
+    console.log("", { error, status, ok, url });
   };
 
   return (

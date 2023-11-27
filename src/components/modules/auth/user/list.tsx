@@ -19,7 +19,7 @@ import { AuthUserType } from "@/types/modules/auth_user";
 import { ModalContext } from "@/components/layout/mui/ModalProvider";
 import { useContext, useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
-import AuthUserNew from "./new";
+import AuthUserForm from "./form";
 import { AxiosError, AxiosResponse } from "axios";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -28,6 +28,8 @@ import Button from "@mui/material/Button";
 import OffCanvasPane from "@/components/layout/mui/OffCanvasPane";
 import Typography from "@mui/material/Typography";
 import FormFilter from "./FormFilter";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import AuthUserEdit from "./edit";
 
 export interface AuthUserPaginationModelType extends PaginationModelType {
   items?: AuthUserType[];
@@ -36,7 +38,6 @@ export interface AuthUserPaginationModelType extends PaginationModelType {
 export interface AuthUserFilterModelType {
   firstname?: string;
   lastname?: string;
-  userType?: string;
   email?: string;
   mobile?: number;
 }
@@ -54,8 +55,8 @@ export interface AuthUsersPagedType {
   items: AuthUserType[];
 }
 
-const pageSizeOptions = [10, 20, 40, 100];
-const pageSizeDefault = 20;
+const pageSizeOptions = [20, 40, 60, 100];
+const pageSizeDefault = 10;
 
 const initialListRequest = {
   filter: {},
@@ -95,7 +96,11 @@ export default function AuthUserList() {
   }
 
   function createNewClick() {
-    showModal("Create new AuthUser", <AuthUserNew onComplete={onMutateComplete} />, "md");
+    showModal("Create new AuthUser", <AuthUserForm onComplete={onMutateComplete} />, "md");
+  }
+
+  function btnEditClick(authUser: AuthUserType) {
+    showModal(`Edit AuthUser /${authUser.firstname}/`, <AuthUserEdit id={authUser.id} onComplete={onMutateComplete} />, "md");
   }
 
   function onFilterFormClose() {
@@ -172,7 +177,7 @@ export default function AuthUserList() {
               setShowFilterForm(!showFilterForm);
             }}
           >
-            <SearchIcon fontSize="large" />
+            <SearchIcon fontSize="large" color="primary" />
           </IconButton>
         </Grid>
 
@@ -191,13 +196,13 @@ export default function AuthUserList() {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>firstname</TableCell>
-                <TableCell>lastname</TableCell>
-                <TableCell>email</TableCell>
-                <TableCell>mobile</TableCell>
-                <TableCell>userType</TableCell>
-                <TableCell>Created At</TableCell>
-                <TableCell></TableCell>
+                <TableCell>Нэр</TableCell>
+                <TableCell>Овог</TableCell>
+                <TableCell>Мэйл</TableCell>
+                <TableCell>Утасны дугаар</TableCell>
+                <TableCell>Үүрэг</TableCell>
+                <TableCell>Үүсгэсэн огноо</TableCell>
+                <TableCell>Засах</TableCell>
               </TableRow>
             </TableHead>
 
@@ -210,14 +215,21 @@ export default function AuthUserList() {
                     <TableCell>{authUser.lastname}</TableCell>
                     <TableCell>{authUser.email}</TableCell>
                     <TableCell>{authUser.mobile}</TableCell>
-                    <TableCell>{authUser.userType}</TableCell>
+                    <TableCell>{authUser.authRole.name}</TableCell>
                     <TableCell>{dayjs(authUser.timeCreated).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                     <TableCell>
-                      <Link href={`/auth/user/${authUser.id}/detail`}>
-                        <IconButton size="medium">
-                          <VisibilityIcon />
-                        </IconButton>
-                      </Link>
+                      <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          sx={{ ml: theme.spacing(0) }}
+                          onClick={() => {
+                            btnEditClick(authUser);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </ButtonGroup>
                     </TableCell>
                   </TableRow>
                 );

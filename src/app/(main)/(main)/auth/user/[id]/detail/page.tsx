@@ -20,6 +20,8 @@ export default function AuthUserDetailPage() {
   const authUserId = parseInt(typeof id == "string" ? id : "0");
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
 
+  console.log("hi", authUser);
+
   const onProductLoadSuccess = (loadedProduct: AuthUserType) => {
     setAuthUser(loadedProduct);
   };

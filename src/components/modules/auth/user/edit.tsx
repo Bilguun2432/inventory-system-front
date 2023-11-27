@@ -7,19 +7,21 @@ import { useDetailSwr } from "./api";
 import ProductForm from "./form";
 
 interface EditProps {
-  id: number;
+  id?: number;
   onComplete?: () => void;
 }
 
-export default function ProductEdit(props: EditProps) {
+export default function AuthUserEdit(props: EditProps) {
   const theme = useTheme();
   const { id, onComplete } = props;
-  // const { data, error, isLoading } = useDetailSwr(id);
-  const { data } = useDetailSwr(id);
+  const { data, mutate } = useDetailSwr(id);
 
-  return (
-    <Box sx={{ my: theme.spacing(2) }}>
-      {data && <ProductForm id={id} onComplete={onComplete} />}
-    </Box>
-  );
+  function onUpdateComplete() {
+    if (onComplete) {
+      onComplete();
+      mutate();
+    }
+  }
+
+  return <Box sx={{ my: theme.spacing(2) }}>{data && <ProductForm authUser={data} onComplete={onUpdateComplete} />}</Box>;
 }

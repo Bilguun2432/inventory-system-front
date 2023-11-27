@@ -5,16 +5,24 @@ import Box from "@mui/material/Box";
 
 import { useDetailSwr } from "./api";
 import ProductForm from "./form";
+import { ProductType } from "@/types/modules/product";
 
 interface EditProps {
-  id: number;
+  product: ProductType;
   onComplete?: () => void;
 }
 
 export default function ProductEdit(props: EditProps) {
   const theme = useTheme();
-  const { id, onComplete } = props;
-  const { data: productDetail } = useDetailSwr(id);
+  const { product, onComplete } = props;
+  const { data: productDetail, mutate } = useDetailSwr(product.id);
 
-  return <Box sx={{ my: theme.spacing(2) }}>{productDetail && <ProductForm product={productDetail} onComplete={onComplete} />}</Box>;
+  function onUpdateComplete() {
+    if (onComplete) {
+      mutate();
+      onComplete();
+    }
+  }
+
+  return <Box sx={{ my: theme.spacing(2) }}>{productDetail && <ProductForm product={productDetail} onComplete={onUpdateComplete} />}</Box>;
 }

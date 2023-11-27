@@ -21,6 +21,7 @@ export interface ProductType {
   price: number;
   unit: number;
   timeCreated: Date;
+  imagePath?: string;
 
-  images?: ProductImageType[];
+  category: ProductCategoryType;
 }
