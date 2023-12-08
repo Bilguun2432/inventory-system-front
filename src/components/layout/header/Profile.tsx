@@ -118,22 +118,6 @@ const Profile = () => {
           },
         }}
       >
-        <Box pt={0}>
-          <List>
-            <ListItemButton component="a" href="#">
-              <ListItemText primary="Edit Profile" />
-            </ListItemButton>
-            <ListItemButton component="a" href="#">
-              <ListItemText primary="Account" />
-            </ListItemButton>
-            <ListItemButton component="a" href="#">
-              <ListItemText primary="Change Password" />
-            </ListItemButton>
-            <ListItemButton component="a" href="#">
-              <ListItemText primary="My Settings" />
-            </ListItemButton>
-          </List>
-        </Box>
         <Divider />
         <Box mt={2}>
           <Button

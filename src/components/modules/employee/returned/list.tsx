@@ -32,7 +32,7 @@ import { useDetailEmailSwr } from "./userapi";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
 import { ActionType } from "@/types/modules/action";
 
-export default function EmployeeSoldList() {
+export default function EmployeeReturnedList() {
   const modalContext = useContext(ModalContext);
   if (modalContext === undefined) {
     throw new Error("ModalContext undefined");
@@ -40,7 +40,6 @@ export default function EmployeeSoldList() {
   const { showModal, hideModal } = modalContext;
 
   const { data: list } = useListSwr();
-
   console.log("hi", list);
 
   const theme = useTheme();

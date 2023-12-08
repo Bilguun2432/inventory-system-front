@@ -32,7 +32,7 @@ import { useDetailEmailSwr } from "./userapi";
 import EmojiTransportationIcon from "@mui/icons-material/EmojiTransportation";
 import { ActionType } from "@/types/modules/action";
 
-export default function EmployeeSoldList() {
+export default function EmployeeBrokenList() {
   const modalContext = useContext(ModalContext);
   if (modalContext === undefined) {
     throw new Error("ModalContext undefined");

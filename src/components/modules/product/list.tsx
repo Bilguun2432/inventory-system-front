@@ -230,6 +230,7 @@ export default function ProductList() {
           </TableHead>
           <TableBody>
             {getItems().map(function (product: ProductType) {
+              console.log("hi", product.imagePath);
               return (
                 <TableRow key={`completion_row_${product.id}`}>
                   <TableCell className="p-1 border border-slate-300 text-center font-bold">{product.id}</TableCell>

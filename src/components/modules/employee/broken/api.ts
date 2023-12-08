@@ -8,5 +8,5 @@ const entryPoint = process.env.NEXT_PUBLIC_ADMN_URL ?? "";
 const urlBase = entryPoint + "/action";
 
 export const useListSwr = () => {
-  return useSWR(`${urlBase}/employee/sold`, GET);
+  return useSWR(`${urlBase}/employee/broken`, GET);
 };
