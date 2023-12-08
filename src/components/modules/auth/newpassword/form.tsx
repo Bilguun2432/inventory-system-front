@@ -10,11 +10,10 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useNewPassword } from "./api";
-import { AuthPermissionType } from "@/types/modules/auth_permission";
 import Loading from "@/components/loader/loader";
 
 interface FormProps {
-  authPermission?: AuthPermissionType;
+  authPermission?: any;
   token: string;
   onComplete?: () => void;
 }
@@ -47,9 +46,7 @@ export default function ChangePasswordForm(props: FormProps) {
       window.location.href = "/auth/login";
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        alert(
-          "Нууц үг нь дор хаяж нэг том, жижиг үсэг, тоо, тусгай тэмдэгт мөн хамгийн багадаа 8 тэмдэгтийн урттай байх ёстой.",
-        );
+        alert("Нууц үг нь дор хаяж нэг том, жижиг үсэг, тоо, тусгай тэмдэгт мөн хамгийн багадаа 8 тэмдэгтийн урттай байх ёстой.");
       } else {
         alert("Token-ий хугацаа дууссан эсвэл олдсонгүй.");
       }
@@ -98,17 +95,8 @@ export default function ChangePasswordForm(props: FormProps) {
             />
           </Box>
 
-          <Stack
-            direction="row"
-            justifyContent="start"
-            sx={{ mb: theme.spacing(4) }}
-          >
-            <Button
-              type="submit"
-              variant="outlined"
-              color="primary"
-              size="medium"
-            >
+          <Stack direction="row" justifyContent="start" sx={{ mb: theme.spacing(4) }}>
+            <Button type="submit" variant="outlined" color="primary" size="medium">
               Change Password
             </Button>
           </Stack>
